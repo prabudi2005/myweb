@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResearchHub LK - Sri Lanka's Academic Research & Thesis Marketplace</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            950: '#040711',
+                            900: '#070b19',
+                            800: '#0f172a',
+                            700: '#1e293b',
+                            600: '#334155'
+                        },
+                        cyan: {
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- External CSS file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-navy-900 text-slate-100 min-h-screen flex flex-col justify-between custom-scrollbar">
+
+    <!-- NAVIGATION BAR -->
+    <header class="sticky top-0 z-40 bg-navy-900/90 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Brand Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('directory')">
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-cyan-600 to-cyan-400 flex items-center justify-center text-navy-950 font-bold text-xl shadow-lg shadow-cyan-500/20">
+                        <i class="fa-solid font-bold fa-microscope"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-extrabold tracking-tight text-white">ResearchHub <span class="text-cyan-400">LK</span></span>
+                        <p class="text-xs text-slate-400 font-medium">Sri Lanka Academic Marketplace</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden md:flex items-center space-x-1">
+                    <button id="nav-directory" onclick="switchTab('directory')" class="nav-btn px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 text-cyan-400 bg-navy-800 border border-slate-700/50">
+                        <i class="fa-solid fa-book-bookmark mr-2"></i>Research Directory
+                    </button>
+                    <button id="nav-submit" onclick="switchTab('submit')" class="nav-btn px-4 py-2.5 rounded-lg text-sm font-semibold text-slate-300 hover:text-white hover:bg-navy-800 transition-all duration-200">
+                        <i class="fa-solid fa-cloud-arrow-up mr-2"></i>Submit Research
+                    </button>
+                    <button id="nav-industry" onclick="switchTab('industry')" class="nav-btn px-4 py-2.5 rounded-lg text-sm font-semibold text-slate-300 hover:text-white hover:bg-navy-800 transition-all duration-200">
+                        <i class="fa-solid fa-building-user mr-2"></i>Industry Portal
+                    </button>
+                </nav>
+
+                <!-- Action Button & Stats Badge -->
+                <div class="hidden sm:flex items-center space-x-4">
+                    <div class="text-right hidden lg:block">
+                        <p class="text-xs text-slate-400">Verified Theses</p>
+                        <p class="text-sm font-bold text-cyan-400">1,240+ Works</p>
+                    </div>
+                    <button onclick="switchTab('submit')" class="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 text-navy-950 font-bold px-5 py-2.5 rounded-xl text-sm shadow-lg shadow-cyan-500/20 transition-all duration-200 transform hover:-translate-y-0.5">
+                        <i class="fa-solid fa-plus mr-1.5"></i> Publish Thesis
+                    </button>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-navy-800 focus:outline-none">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden bg-navy-800 border-b border-slate-700 px-4 pt-2 pb-4 space-y-2">
+            <button onclick="switchTab('directory'); toggleMobileMenu()" class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-cyan-400 bg-navy-900">
+                <i class="fa-solid fa-book-bookmark mr-2"></i>Research Directory
+            </button>
+            <button onclick="switchTab('submit'); toggleMobileMenu()" class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-navy-900">
+                <i class="fa-solid fa-cloud-arrow-up mr-2"></i>Submit Research
+            </button>
+            <button onclick="switchTab('industry'); toggleMobileMenu()" class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-navy-900">
+                <i class="fa-solid fa-building-user mr-2"></i>Industry Portal
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow">
+
+        <!-- SECTION 1: RESEARCH DIRECTORY (DEFAULT ACTIVE) -->
+        <section id="section-directory" class="block">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden bg-gradient-to-b from-navy-800 to-navy-900 border-b border-slate-800 py-16 px-4 sm:px-6 lg:px-8">
+                <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                <div class="max-w-5xl mx-auto text-center relative z-10">
+                    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 mb-4">
+                        <i class="fa-solid fa-graduation-cap"></i> Empowering Sri Lankan Academic Innovation
+                    </span>
+                    <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-4 leading-tight">
+                        Discover & Commercialize University <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Research & Theses</span>
+                    </h1>
+                    <p class="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto mb-8 leading-relaxed">
+                        Connecting Sri Lankan undergraduate and postgraduate researchers with industry leaders, investors, and corporate partners to solve real-world challenges.
+                    </p>
+
+                    <!-- Interactive Live Search Bar -->
+                    <div class="max-w-3xl mx-auto bg-navy-800 p-2 sm:p-3 rounded-2xl border border-slate-700/80 shadow-2xl flex flex-col sm:flex-row gap-2">
+                        <div class="relative flex-grow flex items-center">
+                            <i class="fa-solid fa-magnifying-glass absolute left-4 text-slate-400 text-lg"></i>
+                            <input type="text" id="search-input" onkeyup="filterResearch()" placeholder="Search topics, universities, keywords (e.g. AI, Colombo, Solar)..." class="w-full bg-navy-900 text-white pl-11 pr-4 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-cyan-400 placeholder-slate-500 text-sm">
+                        </div>
+                        <div class="sm:w-48">
+                            <select id="university-filter" onchange="filterResearch()" class="w-full bg-navy-900 text-white px-3 py-3 rounded-xl border border-slate-700 focus:outline-none focus:border-cyan-400 text-sm">
+                                <option value="ALL">All Universities</option>
+                                <option value="University of Moratuwa">UOM (Moratuwa)</option>
+                                <option value="University of Colombo">UOC (Colombo)</option>
+                                <option value="University of Peradeniya">UOP (Peradeniya)</option>
+                                <option value="SLIIT">SLIIT</option>
+                                <option value="University of Sri Jayewardenepura">USJ (Jayewardenepura)</option>
+                                <option value="IIT Sri Lanka">IIT Sri Lanka</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Directory Content -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                <!-- Category Tabs -->
+                <div class="flex items-center justify-between flex-wrap gap-4 mb-8 border-b border-slate-800 pb-4">
+                    <div class="flex items-center space-x-2 overflow-x-auto pb-2 sm:pb-0 custom-scrollbar w-full sm:w-auto" id="category-buttons">
+                        <button onclick="setCategory('ALL')" class="cat-btn active-cat bg-cyan-500 text-navy-950 font-bold px-4 py-2 rounded-xl text-xs sm:text-sm whitespace-nowrap transition-all">All Fields</button>
+                        <button onclick="setCategory('Engineering')" class="cat-btn bg-navy-800 text-slate-300 hover:text-white hover:bg-slate-700 px-4 py-2 rounded-xl text-xs sm:text-sm whitespace-nowrap transition-all border border-slate-700">Engineering & Tech</button>
+                        <button onclick="setCategory('AI & Computing')" class="cat-btn bg-navy-800 text-slate-300 hover:text-white hover:bg-slate-700 px-4 py-2 rounded-xl text-xs sm:text-sm whitespace-nowrap transition-all border border-slate-700">AI & Computer Science</button>
+                        <button onclick="setCategory('Agriculture')" class="cat-btn bg-navy-800 text-slate-300 hover:text-white hover:bg-slate-700 px-4 py-2 rounded-xl text-xs sm:text-sm whitespace-nowrap transition-all border border-slate-700">Agritech & Food</button>
+                        <button onclick="setCategory('Biomedical')" class="cat-btn bg-navy-800 text-slate-300 hover:text-white hover:bg-slate-700 px-4 py-2 rounded-xl text-xs sm:text-sm whitespace-nowrap transition-all border border-slate-700">Medicine & Healthcare</button>
+                        <button onclick="setCategory('Business')" class="cat-btn bg-navy-800 text-slate-300 hover:text-white hover:bg-slate-700 px-4 py-2 rounded-xl text-xs sm:text-sm whitespace-nowrap transition-all border border-slate-700">Business & FinTech</button>
+                    </div>
+                    <div class="text-xs text-slate-400 font-medium">
+                        Showing <span id="displayed-count" class="text-cyan-400 font-bold">6</span> Studies
+                    </div>
+                </div>
+
+                <!-- Dynamic Thesis Cards Grid -->
+                <div id="thesis-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Javascript will populate dynamic thesis cards here -->
+                </div>
+
+                <!-- Empty State Message -->
+                <div id="no-results" class="hidden text-center py-16 bg-navy-800/40 rounded-2xl border border-slate-800 my-8">
+                    <i class="fa-solid fa-folder-open text-5xl text-slate-600 mb-3"></i>
+                    <h3 class="text-lg font-bold text-white mb-1">No Matching Research Papers Found</h3>
+                    <p class="text-sm text-slate-400">Try adjusting your keywords or category filters to find relevant research works.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: SUBMIT RESEARCH FORM -->
+        <section id="section-submit" class="hidden py-12 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-navy-800 border border-slate-700/70 rounded-2xl p-6 sm:p-8 mb-8 shadow-xl">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl">
+                            <i class="fa-solid fa-file-circle-plus"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-white">Publish Student Research & Thesis</h2>
+                            <p class="text-sm text-slate-400">Upload your completed or ongoing research project to connect with industry buyers and academic sponsors.</p>
+                        </div>
+                    </div>
+
+                    <!-- Submission Form -->
+                    <form id="research-form" onsubmit="handleFormSubmit(event)" class="space-y-6 mt-6 border-t border-slate-700/60 pt-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div class="sm:col-span-2">
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Research / Thesis Title *</label>
+                                <input type="text" id="form-title" required placeholder="e.g. Smart IoT Irrigation System for Lowland Paddy Cultivation" class="w-full bg-navy-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-400 text-sm">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Author Name(s) *</label>
+                                <input type="text" id="form-author" required placeholder="e.g. Kasun Perera & Team" class="w-full bg-navy-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-400 text-sm">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">University / Institute *</label>
+                                <select id="form-university" required class="w-full bg-navy-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-400 text-sm">
+                                    <option value="">Select University</option>
+                                    <option value="University of Moratuwa">University of Moratuwa</option>
+                                    <option value="University of Colombo">University of Colombo</option>
+                                    <option value="University of Peradeniya">University of Peradeniya</option>
+                                    <option value="SLIIT">SLIIT</option>
+                                    <option value="University of Sri Jayewardenepura">University of Sri Jayewardenepura</option>
+                                    <option value="IIT Sri Lanka">IIT Sri Lanka</option>
+                                    <option value="University of Kelaniya">University of Kelaniya</option>
+                                    <option value="Other Institution">Other Sri Lankan Higher Education Institute</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Academic Field / Domain *</label>
+                                <select id="form-category" required class="w-full bg-navy-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-400 text-sm">
+                                    <option value="Engineering">Engineering & Technology</option>
+                                    <option value="AI & Computing">AI & Computer Science</option>
+                                    <option value="Agriculture">Agritech & Food Sciences</option>
+                                    <option value="Biomedical">Medicine & Healthcare</option>
+                                    <option value="Business">Business & FinTech</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Commercial Status *</label>
+                                <select id="form-status" required class="w-full bg-navy-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-400 text-sm">
+                                    <option value="Open for Commercialization">Open for Commercialization</option>
+                                    <option value="Seeking Funding / Investor">Seeking Funding / Investor</option>
+                                    <option value="Prototype Ready">Prototype Ready for Pilot</option>
+                                    <option value="Academic Collaboration">Academic Collaboration Only</option>
+                                </select>
+                            </div>
+
+                            <div class="sm:col-span-2">
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Abstract Summary *</label>
+                                <textarea id="form-abstract" rows="4" required placeholder="Summarize the core problem statement, research methodology, findings, and potential commercial applications..." class="w-full bg-navy-900 border border-slate-700 rounded-xl p-4 text-white focus:outline-none focus:border-cyan-400 text-sm"></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Keywords (comma separated)</label>
+                                <input type="text" id="form-tags" placeholder="e.g. IoT, Agriculture, Smart Sensors, Cloud" class="w-full bg-navy-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-400 text-sm">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Cover Image URL (Optional)</label>
+                                <input type="url" id="form-image" placeholder="Leave blank for automatic Unsplash background" class="w-full bg-navy-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-400 text-sm">
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-slate-700/60 flex items-center justify-end space-x-4">
+                            <button type="button" onclick="switchTab('directory')" class="px-6 py-3 rounded-xl text-sm font-semibold text-slate-400 hover:text-white transition-all">Cancel</button>
+                            <button type="submit" class="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 text-navy-950 font-bold px-8 py-3 rounded-xl text-sm shadow-lg shadow-cyan-500/20 transition-all transform hover:-translate-y-0.5">
+                                <i class="fa-solid fa-paper-plane mr-2"></i> Submit & Publish
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: INDUSTRY & CORPORATE PORTAL -->
+        <section id="section-industry" class="hidden py-12 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto space-y-12">
+                <div class="bg-gradient-to-r from-navy-800 via-navy-800 to-slate-900 border border-slate-700/80 rounded-3xl p-8 sm:p-12 relative overflow-hidden">
+                    <div class="max-w-3xl relative z-10">
+                        <span class="inline-block bg-cyan-500/10 text-cyan-400 text-xs font-bold px-3 py-1 rounded-full border border-cyan-500/20 mb-4">Corporate & R&D Strategic Bridge</span>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">Bridging University R&D with Sri Lankan Enterprise</h2>
+                        <p class="text-slate-300 text-base mb-6 leading-relaxed">
+                            Discover patent-ready solutions, commission custom university research projects, and sponsor top-tier talent from Sri Lanka's leading universities.
+                        </p>
+                        <div class="flex flex-wrap gap-4">
+                            <button onclick="openCorporateContactModal('R&D Partnership')" class="bg-cyan-400 hover:bg-cyan-300 text-navy-950 font-bold px-6 py-3 rounded-xl text-sm shadow-lg transition-all">
+                                Request R&D Matchmaking
+                            </button>
+                            <button onclick="openCorporateContactModal('Sponsor Thesis')" class="bg-navy-900 hover:bg-slate-800 text-slate-200 border border-slate-700 font-semibold px-6 py-3 rounded-xl text-sm transition-all">
+                                Sponsor Academic Thesis
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-navy-800 border border-slate-700/70 rounded-2xl p-6 glow-effect">
+                        <div class="w-12 h-12 bg-cyan-500/10 rounded-xl border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl mb-4">
+                            <i class="fa-solid fa-briefcase"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Technology Transfer & IP Acquisition</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                            Acquire licensed rights or patents for cutting-edge algorithms, hardware prototypes, and biochemical innovations created by university teams.
+                        </p>
+                        <button onclick="openCorporateContactModal('IP Acquisition')" class="text-cyan-400 font-bold text-xs hover:underline inline-flex items-center">
+                            Explore IP Catalogue <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+
+                    <div class="bg-navy-800 border border-slate-700/70 rounded-2xl p-6 glow-effect">
+                        <div class="w-12 h-12 bg-cyan-500/10 rounded-xl border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl mb-4">
+                            <i class="fa-solid fa-hands-holding-circle"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Commissioned Industry Research</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                            Outsource specialized laboratory testing, data modeling, or field studies directly to university faculties and post-graduate researchers.
+                        </p>
+                        <button onclick="openCorporateContactModal('Commission Research')" class="text-cyan-400 font-bold text-xs hover:underline inline-flex items-center">
+                            Post Problem Statement <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+
+                    <div class="bg-navy-800 border border-slate-700/70 rounded-2xl p-6 glow-effect">
+                        <div class="w-12 h-12 bg-cyan-500/10 rounded-xl border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl mb-4">
+                            <i class="fa-solid fa-user-graduate"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Talent Acquisition & Hiring</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                            Connect directly with exceptional final-year research students and engineers before graduation for specialized corporate roles.
+                        </p>
+                        <button onclick="openCorporateContactModal('Talent Recruitment')" class="text-cyan-400 font-bold text-xs hover:underline inline-flex items-center">
+                            Connect with Graduates <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-navy-800/50 border border-slate-800 rounded-2xl p-8 text-center">
+                    <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-6">Collaborating University R&D Cells & Enterprise Partners</p>
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-6 items-center justify-center text-slate-400 font-bold text-sm">
+                        <div class="bg-navy-900 border border-slate-800 p-4 rounded-xl text-slate-300">Moratuwa R&D Hub</div>
+                        <div class="bg-navy-900 border border-slate-800 p-4 rounded-xl text-slate-300">Colombo Science Tech</div>
+                        <div class="bg-navy-900 border border-slate-800 p-4 rounded-xl text-slate-300">Peradeniya Agri Center</div>
+                        <div class="bg-navy-900 border border-slate-800 p-4 rounded-xl text-slate-300">SLIIT Innovation Lab</div>
+                        <div class="bg-navy-900 border border-slate-800 p-4 rounded-xl text-slate-300">Jayewardenepura Tech Transfer</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ABSTRACT & DETAILS PREVIEW MODAL -->
+    <div id="research-modal" class="fixed inset-0 bg-navy-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-navy-800 border border-slate-700 rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl relative">
+            <div id="modal-img-container" class="h-48 bg-cover bg-center relative">
+                <div class="absolute inset-0 bg-gradient-to-t from-navy-800 to-transparent"></div>
+                <button onclick="closeModal()" class="absolute top-4 right-4 bg-navy-950/80 text-white hover:text-cyan-400 rounded-full w-10 h-10 flex items-center justify-center transition-all">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="p-6 sm:p-8 space-y-6 -mt-10 relative z-10">
+                <div class="flex flex-wrap items-center gap-2">
+                    <span id="modal-category" class="bg-cyan-500/20 text-cyan-400 text-xs font-bold px-3 py-1 rounded-full border border-cyan-500/30">Engineering</span>
+                    <span id="modal-status" class="bg-emerald-500/20 text-emerald-400 text-xs font-bold px-3 py-1 rounded-full border border-emerald-500/30">Open for Commercialization</span>
+                </div>
+
+                <h2 id="modal-title" class="text-2xl font-bold text-white leading-tight">Thesis Title Goes Here</h2>
+
+                <div class="flex flex-wrap gap-6 text-sm text-slate-300 border-y border-slate-700/60 py-3">
+                    <div>
+                        <span class="text-xs text-slate-500 block">Lead Researcher(s)</span>
+                        <span id="modal-author" class="font-semibold text-slate-200"><i class="fa-solid fa-user-graduate text-cyan-400 mr-1"></i> Author Name</span>
+                    </div>
+                    <div>
+                        <span class="text-xs text-slate-500 block">Institution</span>
+                        <span id="modal-university" class="font-semibold text-slate-200"><i class="fa-solid fa-building-columns text-cyan-400 mr-1"></i> University</span>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-bold uppercase tracking-wider text-cyan-400 mb-2">Abstract & Executive Summary</h3>
+                    <p id="modal-abstract" class="text-slate-300 text-sm leading-relaxed whitespace-pre-line"></p>
+                </div>
+
+                <div>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Keywords & Domain Tags</h3>
+                    <div id="modal-tags" class="flex flex-wrap gap-2"></div>
+                </div>
+
+                <div class="bg-navy-900 border border-slate-700/80 rounded-xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div>
+                        <h4 class="text-sm font-bold text-white">Interested in this thesis or prototype?</h4>
+                        <p class="text-xs text-slate-400">Directly message the research team or request full document access.</p>
+                    </div>
+                    <button onclick="alert('Inquiry sent! The research author will receive your message via ResearchHub LK.')" class="bg-cyan-400 hover:bg-cyan-300 text-navy-950 font-bold px-5 py-2.5 rounded-xl text-sm whitespace-nowrap transition-all shadow-md">
+                        <i class="fa-solid fa-paper-plane mr-1.5"></i> Contact Authors
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CORPORATE CONTACT MODAL -->
+    <div id="corporate-modal" class="fixed inset-0 bg-navy-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-navy-800 border border-slate-700 rounded-2xl max-w-lg w-full p-6 sm:p-8 relative shadow-2xl">
+            <button onclick="closeCorporateModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <h3 class="text-xl font-bold text-white mb-2">Corporate Inquiry & R&D Request</h3>
+            <p id="corp-modal-subtitle" class="text-sm text-slate-400 mb-6">Connect with our Academic Relations team to facilitate institutional partnerships.</p>
+            
+            <form onsubmit="handleCorporateSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">Company / Organization Name</label>
+                    <input type="text" required placeholder="e.g. MillenniumIT ESP, Dialog Enterprise" class="w-full bg-navy-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white text-sm focus:border-cyan-400 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">Corporate Email Address</label>
+                    <input type="email" required placeholder="name@company.com" class="w-full bg-navy-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white text-sm focus:border-cyan-400 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">Scope of Interest / Message</label>
+                    <textarea rows="3" required placeholder="Briefly describe your technical requirements or sponsorship goals..." class="w-full bg-navy-900 border border-slate-700 rounded-xl p-3 text-white text-sm focus:border-cyan-400 focus:outline-none"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-cyan-400 hover:bg-cyan-300 text-navy-950 font-bold py-3 rounded-xl text-sm transition-all shadow-lg">
+                    Submit Corporate Inquiry
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-navy-950 border-t border-slate-800 py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div class="space-y-3">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 rounded-lg bg-cyan-400 flex items-center justify-center text-navy-950 font-bold text-sm">
+                            <i class="fa-solid fa-microscope"></i>
+                        </div>
+                        <span class="text-lg font-bold text-white">ResearchHub <span class="text-cyan-400">LK</span></span>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        The premiere academic marketplace bridging Sri Lanka's universities with local and international industry R&D teams.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-200 mb-3">Academic Fields</h4>
+                    <ul class="space-y-2 text-xs text-slate-400">
+                        <li><a href="#" onclick="setCategory('Engineering'); switchTab('directory')" class="hover:text-cyan-400">Engineering & Tech</a></li>
+                        <li><a href="#" onclick="setCategory('AI & Computing'); switchTab('directory')" class="hover:text-cyan-400">AI & Computer Science</a></li>
+                        <li><a href="#" onclick="setCategory('Agriculture'); switchTab('directory')" class="hover:text-cyan-400">Agritech & Sustainable Energy</a></li>
+                        <li><a href="#" onclick="setCategory('Biomedical'); switchTab('directory')" class="hover:text-cyan-400">Medicine & Healthcare</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-200 mb-3">Participating Universities</h4>
+                    <ul class="space-y-2 text-xs text-slate-400">
+                        <li>University of Moratuwa</li>
+                        <li>University of Colombo</li>
+                        <li>University of Peradeniya</li>
+                        <li>SLIIT & IIT Sri Lanka</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-200 mb-3">Legal & Institutional</h4>
+                    <ul class="space-y-2 text-xs text-slate-400">
+                        <li><a href="#" class="hover:text-cyan-400">Intellectual Property Policy</a></li>
+                        <li><a href="#" class="hover:text-cyan-400">Commercialization Guidelines</a></li>
+                        <li><a href="#" class="hover:text-cyan-400">Terms of Academic Service</a></li>
+                        <li><a href="#" class="hover:text-cyan-400">Contact Portal Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800/80 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500">
+                <p>&copy; 2026 ResearchHub LK. All Rights Reserved. Built for Sri Lankan University Innovation.</p>
+                <div class="flex space-x-4 mt-4 sm:mt-0">
+                    <a href="#" class="hover:text-cyan-400"><i class="fa-brands fa-linkedin text-base"></i></a>
+                    <a href="#" class="hover:text-cyan-400"><i class="fa-brands fa-github text-base"></i></a>
+                    <a href="#" class="hover:text-cyan-400"><i class="fa-brands fa-twitter text-base"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Link to external JS file -->
+    <script src="app.js"></script>
+</body>
+</html>
